@@ -4,12 +4,13 @@ from pydantic import BaseModel
 from typing import List
 from fastapi.middleware.cors import CORSMiddleware
 import json
+from loguru import logger
 
 origins = [
     "http://localhost",
     "http://localhost:8000",
     "http://localhost:3000",
-    'http://192.168.1.150:3000',
+    'http://192.168.1.150:3000',  # self ip with react
     'http://127.0.0.1:3000',
 ]
 
@@ -49,6 +50,7 @@ def write_cats_to_file(cats):
 @app.get('/cats', response_model=List[Cat])
 async def get_cats():
     cats = read_cats_from_file()
+    logger.info(f"Retrieved {len(cats)} cats from file.")
     return cats
 
 
@@ -59,6 +61,7 @@ async def create_cat(cat: CatCreate):
     new_cat = Cat(id=new_cat_id, **cat.dict())
     cats.append(new_cat)
     write_cats_to_file(cats)
+    logger.info(f"Created new cat: {new_cat}")
     return new_cat
 
 
@@ -71,8 +74,10 @@ async def update_cat(cat_id: int, cat: CatCreate):
         cat_to_update.breed = cat.breed
         cat_to_update.age = cat.age
         write_cats_to_file(cats)
+        logger.info(f"Updated cat with id {cat_id}: {cat_to_update}")
         return cat_to_update
     else:
+        logger.warning(f"Failed to update cat with id {cat_id}. Cat not found.")
         return JSONResponse(status_code=404, content={"message": "Cat not found."})
 
 
@@ -81,4 +86,11 @@ async def delete_cat(cat_id: int):
     cats = read_cats_from_file()
     remaining_cats = [cat for cat in cats if cat.id != cat_id]
     write_cats_to_file(remaining_cats)
+    logger.info(f"Deleted cat with id {cat_id}.")
     return {"message": "Cat deleted successfully."}
+
+
+if __name__ == '__main__':
+    import uvicorn
+    logger.add("file_{time}.log")
+    uvicorn.run(app, host='localhost', port=8000)
