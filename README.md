@@ -59,3 +59,8 @@ Az API a következő technológiákat használja:
 - Pydantic
 - uvicorn
 - CORS Middleware
+
+## Frontend
+
+Az applikációhoz tartozó frontend az alábbi linken érhető el:
+https://github.com/wolgyes/react-cats
