@@ -5,7 +5,6 @@ from main import app
 
 
 class TestApp:
-
     def setup_class(self):
         self.client = TestClient(app)
 
@@ -16,13 +15,18 @@ class TestApp:
             self.original_file = f.read()
 
         with open("cats.json", "w") as f:
-            json.dump([{
-                "id": 1,
-                "name": "Fluffy",
-                "breed": "Persian",
-                "age": 2,
-                "image": None
-            }], f)
+            json.dump(
+                [
+                    {
+                        "id": 1,
+                        "name": "Fluffy",
+                        "breed": "Persian",
+                        "age": 2,
+                        "image": None,
+                    }
+                ],
+                f,
+            )
 
         self.original_images = [images for images in os.listdir("images")]
 
@@ -50,7 +54,7 @@ class TestApp:
                 "name": "Egycica",
                 "breed": "Perzsa",
                 "age": 444,
-            }
+            },
         )
         assert response.status_code == 200
         assert response.json()["name"] == "Egycica"
@@ -73,7 +77,9 @@ class TestApp:
         response = self.client.post("/cats", json=cat_data)
         cat_id = response.json()["id"]
         with open("images/test_image.jpg", "rb") as f:
-            response = self.client.post(f"/cats/{cat_id}/image", files={"image": f.read()})
+            response = self.client.post(
+                f"/cats/{cat_id}/image", files={"image": f.read()}
+            )
         assert response.status_code == 200
         assert response.json()["message"] == "Image uploaded successfully."
 

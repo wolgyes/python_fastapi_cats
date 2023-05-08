@@ -19,7 +19,7 @@ app.add_middleware(
         "http://localhost",
         "http://localhost:8000",
         "http://localhost:3000",
-        'http://127.0.0.1:3000',
+        "http://127.0.0.1:3000",
     ],
     allow_credentials=True,
     allow_methods=["*"],
@@ -43,14 +43,13 @@ def configure_static(app):
 
 
 def read_cats_from_file():
-    with open('cats.json') as f:
+    with open("cats.json") as f:
         cats_data = json.load(f)
-        print(cats_data)
         return [Cat(**cat) for cat in cats_data]
 
 
 def write_cats_to_file(cats):
-    with open('cats.json', 'w') as f:
+    with open("cats.json", "w") as f:
         cats_data = [cat.dict() for cat in cats]
         json.dump(cats_data, f)
 
@@ -65,14 +64,14 @@ def search_first_cat(**search_params) -> Cat:
                 raise Exception("Wrong parameter.")
 
 
-@app.get('/cats', response_model=List[Cat])
+@app.get("/cats", response_model=List[Cat])
 async def get_cats():
     cats = read_cats_from_file()
     logger.info(f"Retrieved {len(cats)} cats from file.")
     return cats
 
 
-@app.post('/cats', response_model=Cat)
+@app.post("/cats", response_model=Cat)
 async def create_cat(cat: CatCreate):
     cats = read_cats_from_file()
     new_cat_id = max(cat.id for cat in cats) + 1 if cats else 1
@@ -99,11 +98,13 @@ async def upload_cat_image(cat_id: int, image: UploadFile):
         logger.info(f"Uploaded image for cat with id {cat_id}.")
         return {"message": "Image uploaded successfully."}
     else:
-        logger.warning(f"Failed to upload image for cat with id {cat_id}. Cat not found.")
+        logger.warning(
+            f"Failed to upload image for cat with id {cat_id}. Cat not found."
+        )
         return JSONResponse(status_code=404, content={"message": "Cat not found."})
 
 
-@app.put('/cats/{cat_id}', response_model=Cat)
+@app.put("/cats/{cat_id}", response_model=Cat)
 async def update_cat(cat_id: int, cat: CatCreate):
     cats = read_cats_from_file()
     cat_to_update = next((c for c in cats if c.id == cat_id), None)
@@ -119,7 +120,7 @@ async def update_cat(cat_id: int, cat: CatCreate):
         return JSONResponse(status_code=404, content={"message": "Cat not found."})
 
 
-@app.delete('/cats/{cat_id}', response_class=JSONResponse)
+@app.delete("/cats/{cat_id}", response_class=JSONResponse)
 async def delete_cat(cat_id: int):
     cats = read_cats_from_file()
     cat = search_first_cat(id=cat_id)
@@ -131,8 +132,8 @@ async def delete_cat(cat_id: int):
     return {"message": "Cat deleted successfully."}
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     import uvicorn
 
     configure_static(app)
-    uvicorn.run(app, host='localhost', port=8000)
+    uvicorn.run(app, host="localhost", port=8000)

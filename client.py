@@ -26,15 +26,21 @@ class CatApp:
         self.age_entry.grid(row=2, column=1)
 
         # Create button to submit cat data
-        self.submit_button = tk.Button(master, text="Create Cat", command=self.create_cat)
+        self.submit_button = tk.Button(
+            master, text="Create Cat", command=self.create_cat
+        )
         self.submit_button.grid(row=3, column=1)
 
         # Create button to select image file
-        self.select_button = tk.Button(master, text="Select Image", command=self.select_image)
+        self.select_button = tk.Button(
+            master, text="Select Image", command=self.select_image
+        )
         self.select_button.grid(row=4, column=0)
 
         # Create button to upload image
-        self.upload_button = tk.Button(master, text="Upload Image", command=self.upload_image, state="disabled")
+        self.upload_button = tk.Button(
+            master, text="Upload Image", command=self.upload_image, state="disabled"
+        )
         self.upload_button.grid(row=4, column=1)
 
         # Create label for image file path
@@ -52,37 +58,40 @@ class CatApp:
 
         for idx, cat in enumerate(cats):
 
-            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg="white", font=("Arial", 14))
             e.grid(row=idx + 8, column=0)
-            e.insert(1, cat['id'])
+            e.insert(1, cat["id"])
 
-            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg="white", font=("Arial", 14))
             e.grid(row=idx + 8, column=1)
-            e.insert(1, cat['name'])
+            e.insert(1, cat["name"])
 
-            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg="white", font=("Arial", 14))
             e.grid(row=idx + 8, column=2)
-            e.insert(1, cat['age'])
+            e.insert(1, cat["age"])
 
-            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg="white", font=("Arial", 14))
             e.grid(row=idx + 8, column=3)
-            e.insert(1, cat['breed'])
+            e.insert(1, cat["breed"])
 
-            if cat['image'] == None:
-                e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
+            if cat["image"] == None:
+                e = tk.Entry(self.master, width=20, fg="white", font=("Arial", 14))
                 e.grid(row=idx + 8, column=4)
                 e.insert(1, "No Image")
 
             else:
-                e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
+                e = tk.Entry(self.master, width=20, fg="white", font=("Arial", 14))
                 e.grid(row=idx + 8, column=4)
-                e.insert(1, cat['image'])
+                e.insert(1, cat["image"])
 
             e = tk.Button(
-                self.master, width=10,
-                fg='blue', font=('Arial', 14),
+                self.master,
+                width=10,
+                fg="blue",
+                font=("Arial", 14),
                 text="Delete",
-                command=lambda idx=cat["id"]: self.delete_cat(idx))
+                command=lambda idx=cat["id"]: self.delete_cat(idx),
+            )
             e.grid(row=idx + 8, column=5)
 
     def create_cat(self):
@@ -90,7 +99,7 @@ class CatApp:
         cat_data = {
             "name": self.name_entry.get(),
             "breed": self.breed_entry.get(),
-            "age": int(self.age_entry.get())
+            "age": int(self.age_entry.get()),
         }
 
         # Make POST request to create new cat
@@ -101,7 +110,9 @@ class CatApp:
             self.upload_button.config(state="normal")
 
     def select_image(self):
-        self.file_path = filedialog.askopenfilename(filetypes=[("Image Files", "*.jpg *.jpeg *.png")])
+        self.file_path = filedialog.askopenfilename(
+            filetypes=[("Image Files", "*.jpg *.jpeg *.png")]
+        )
 
     def refresh(self):
         root.destroy()
@@ -115,7 +126,10 @@ class CatApp:
                 file_contents = f.read()
 
             # Make POST request to upload image for the specified cat
-            response = requests.post(f"http://localhost:8000/cats/{self.cat_id}/image", files={"image": file_contents})
+            response = requests.post(
+                f"http://localhost:8000/cats/{self.cat_id}/image",
+                files={"image": file_contents},
+            )
             if response.status_code == 200:
                 # Clear image file path and disable upload button
                 self.file_path = None
@@ -124,7 +138,6 @@ class CatApp:
 
     def delete_cat(self, idx):
         requests.delete(f"http://localhost:8000/cats/{idx}")
-
 
 
 root = tk.Tk()
