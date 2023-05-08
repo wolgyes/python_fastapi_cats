@@ -1,14 +1,16 @@
 [
   {
-    "name": "Cirmos",
-    "breed": "Perzsa",
+    "name": "asd",
+    "breed": "asd",
     "age": 123,
-    "id": 4
+    "id": 1,
+    "image": null
   },
   {
-    "name": "Szatyor",
-    "breed": "Siamese",
-    "age": 2,
-    "id": 5
+    "name": "asd",
+    "breed": "1",
+    "age": 1,
+    "id": 2,
+    "image": "images/2.jpg"
   }
 ]
