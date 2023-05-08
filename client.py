@@ -52,29 +52,29 @@ class CatApp:
 
         for idx, cat in enumerate(cats):
 
-            e = tk.Entry(self.master, width=20, fg='blue', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
             e.grid(row=idx + 8, column=0)
             e.insert(1, cat['id'])
 
-            e = tk.Entry(self.master, width=20, fg='blue', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
             e.grid(row=idx + 8, column=1)
             e.insert(1, cat['name'])
 
-            e = tk.Entry(self.master, width=20, fg='blue', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
             e.grid(row=idx + 8, column=2)
             e.insert(1, cat['age'])
 
-            e = tk.Entry(self.master, width=20, fg='blue', font=('Arial', 14))
+            e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
             e.grid(row=idx + 8, column=3)
             e.insert(1, cat['breed'])
 
             if cat['image'] == None:
-                e = tk.Entry(self.master, width=20, fg='blue', font=('Arial', 14))
+                e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
                 e.grid(row=idx + 8, column=4)
                 e.insert(1, "No Image")
 
             else:
-                e = tk.Entry(self.master, width=20, fg='blue', font=('Arial', 14))
+                e = tk.Entry(self.master, width=20, fg='white', font=('Arial', 14))
                 e.grid(row=idx + 8, column=4)
                 e.insert(1, cat['image'])
 

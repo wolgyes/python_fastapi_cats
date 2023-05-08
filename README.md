@@ -64,3 +64,10 @@ Az API a következő technológiákat használja:
 
 Az applikációhoz tartozó frontend az alábbi linken érhető el:
 https://github.com/wolgyes/react-cats
+
+
+## Update: 2023.05.08
+- Kapott egy buta klienst
+- buta backend testek
+- képfeltöltés
+- nincs hozzá react update (nem is lesz :D)
